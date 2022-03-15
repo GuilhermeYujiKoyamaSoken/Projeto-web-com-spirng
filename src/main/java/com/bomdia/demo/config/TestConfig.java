@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.bomdia.demo.entities.Category;
 import com.bomdia.demo.entities.Order;
+import com.bomdia.demo.entities.OrderItem;
 import com.bomdia.demo.entities.Product;
 import com.bomdia.demo.entities.User;
 import com.bomdia.demo.entities.enums.OrderStatus;
 import com.bomdia.demo.repositories.CategoryRepository;
+import com.bomdia.demo.repositories.OrderItemRepository;
 import com.bomdia.demo.repositories.OrderRepository;
 import com.bomdia.demo.repositories.ProductRepository;
 import com.bomdia.demo.repositories.UserRepository;
@@ -33,6 +35,9 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -57,6 +62,7 @@ public class TestConfig implements CommandLineRunner {
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
 		p1.getCategories().add(cat2);
 		p2.getCategories().add(cat1);
@@ -64,7 +70,12 @@ public class TestConfig implements CommandLineRunner {
 		p3.getCategories().add(cat3);
 		p4.getCategories().add(cat3);
 		p5.getCategories().add(cat2);
+
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
-		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}
 }
