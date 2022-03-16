@@ -1,4 +1,4 @@
-package com.bomdia.demo.resources.exceptions;
+package com.bomdia.demo.services.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

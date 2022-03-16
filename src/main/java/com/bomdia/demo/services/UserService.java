@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.bomdia.demo.entities.User;
 import com.bomdia.demo.repositories.UserRepository;
-import com.bomdia.demo.resources.exceptions.ResourceNotFoundException;
+import com.bomdia.demo.services.exceptions.DatabaseException;
+import com.bomdia.demo.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -30,7 +33,13 @@ public class UserService {
 	}
 
 	public void delete(Long id) {
+		try {
 		repository.deleteById(id);
+		}catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 
 	public User Update(Long id, User obj) {
